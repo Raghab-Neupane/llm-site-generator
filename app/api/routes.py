@@ -11,6 +11,10 @@ from app.crawler.sitemap_parser import (
     parse_sitemap
 )
 
+from app.crawler.internal_link_extractor import (
+    extract_internal_links
+)
+
 from app.extractor.html_fetcher import (
     fetch_html
 )
@@ -48,47 +52,63 @@ async def crawl_site(request: CrawlRequest):
         "sitemap_urls"
     ]
 
-    if not sitemap_urls:
-
-        return {
-            "status": "error",
-            "message": "No sitemap found"
-        }
+    actual_pages = []
+    sitemap_data = None
+    crawl_method = "sitemap"
 
     # STEP 2
-    # PARSE MAIN SITEMAP
+    # TRY SITEMAP FLOW
 
-    sitemap_data = await parse_sitemap(
-        sitemap_urls[0]
-    )
+    if sitemap_urls:
 
-    actual_pages = sitemap_data[
-        "actual_pages"
-    ]
-
-    # HANDLE NESTED SITEMAPS
-
-    if not actual_pages:
-
-        nested_sitemaps = sitemap_data.get(
-            "sitemaps",
-            []
+        sitemap_data = await parse_sitemap(
+            sitemap_urls[0]
         )
 
-        for nested_sitemap in nested_sitemaps[:3]:
+        actual_pages = sitemap_data[
+            "actual_pages"
+        ]
 
-            nested_data = await parse_sitemap(
-                nested_sitemap
-            )
+        # HANDLE NESTED SITEMAPS
 
-            nested_pages = nested_data.get(
-                "actual_pages",
+        if not actual_pages:
+
+            nested_sitemaps = sitemap_data.get(
+                "sitemaps",
                 []
             )
 
-            actual_pages.extend(
-                nested_pages
-            )
+            for nested_sitemap in nested_sitemaps[:3]:
+
+                nested_data = await parse_sitemap(
+                    nested_sitemap
+                )
+
+                nested_pages = nested_data.get(
+                    "actual_pages",
+                    []
+                )
+
+                actual_pages.extend(
+                    nested_pages
+                )
+
+    # STEP 2B
+    # FALLBACK: EXTRACT LINKS FROM HOMEPAGE
+
+    if not actual_pages:
+
+        crawl_method = "homepage_extraction"
+
+        link_data = await extract_internal_links(
+            request.url,
+            max_links=15
+        )
+
+        actual_pages = link_data.get(
+            "links",
+            []
+        )
 
     # STILL NO PAGES
 
@@ -96,7 +116,7 @@ async def crawl_site(request: CrawlRequest):
 
         return {
             "status": "error",
-            "message": "No actual pages found"
+            "message": "No pages found via sitemap or homepage links"
         }
 
     # STEP 3
@@ -170,6 +190,7 @@ async def crawl_site(request: CrawlRequest):
 
     return {
         "status": "success",
+        "crawl_method": crawl_method,
         "robots": robots_data,
         "sitemap": sitemap_data,
         "total_pages_processed": len(
