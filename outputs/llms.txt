@@ -1,0 +1,88 @@
+# Vercel
+
+> AI generated website knowledge base
+
+## Important Pages
+
+- [Proposal for inline LLM instructions in HTML based on llms.txt - Vercel](https://vercel.com/blog/a-proposal-for-inline-llm-instructions-in-html)
+- [Disable Git Integration comments from the dashboard - Vercel](https://vercel.com/changelog/disable-git-integration-comments)
+- [Supabase Project Setup | Vercel Academy](https://vercel.com/academy/subscription-store/supabase-project-setup)
+
+## Proposal for inline LLM instructions in HTML based on llms.txt - Vercel
+
+# Proposal for inline LLM instructions in HTML based on llms.txt - Vercel
+
+> Source: https://vercel.com/blog/a-proposal-for-inline-llm-instructions-in-html
+
+## Link to headingOur use case
+
+## Link to headingThe proposal
+
+## Link to headingWhy use <script> with a new type?
+
+## Link to headingWhy base this on llms.txt?
+
+## Link to headingOur production use case
+
+### Link to headingExample use cases
+
+## Link to headingStandard, convention, or pattern?
+
+A proposal for inline LLM instructions in HTML based on llms.txt
+
+How do you tell an AI agent what it needs to do when it hits a protected page? Most systems rely on external documentation or pre-configured knowledge, but there's a simpler approach.
+
+What if the instructions were right there in the HTML response?
+
+llms.txtis an emerging standard for making content such as docs available for direct consumption by AIs. We’re proposing a convention to include such content directly in HTML responses as<script type="text/llms.txt">.
+
+Vercel prot
+
+## Disable Git Integration comments from the dashboard - Vercel
+
+# Disable Git Integration comments from the dashboard - Vercel
+
+> Source: https://vercel.com/changelog/disable-git-integration-comments
+
+We've added new options to the "Connected Git Repository" settings in theVercel dashboard. It's now possible to configure whether the Vercel bot comments on:
+
+These settings are available for all connected repositories, not just GitHub repositories.
+
+Previously, there was agithub.silentsetting available invercel.jsonthat didn't allow more granular control over disabling comments.We will be deprecating that option on Monday, September 25, 2023.There is no action required at this time to prepare for deprecation. Until that date, if you set that option in yourvercel.jsonfile we will continue to read it, and update the configuration in the dashboard accordingly.
+
+
+
+## Supabase Project Setup | Vercel Academy
+
+# Supabase Project Setup | Vercel Academy
+
+> Source: https://vercel.com/academy/subscription-store/supabase-project-setup
+
+# Supabase Project Setup
+
+## Outcome
+
+## Fast Track
+
+## Hands-on Exercise 1.2
+
+## Try It
+
+## Commit
+
+## Done-When
+
+## Solution
+
+## Understanding the Keys
+
+## Troubleshooting
+
+Supabase handles authentication so you don't have to build password hashing, session management, and email verification from scratch. Creating a project takes two minutes and gives you production-ready auth infrastructure.
+
+Create a Supabase project and configure environment variables so your app can authenticate users.
+
+No errors about missing environment variables means you're configured correctly.
+
+
+
