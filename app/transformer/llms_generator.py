@@ -23,10 +23,17 @@ def generate_llms_txt(site_name, pages):
     for page in pages:
 
         title = page["title"]
-
+        url = page["url"]
+        description = page["description"]
         markdown = page["markdown"]
 
         content += f"## {title}\n\n"
+
+        content += f"[Link]({url})\n\n"
+
+        content += (
+            f"Description: {description}\n\n"
+        )
 
         content += markdown[:1000]
 

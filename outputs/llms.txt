@@ -1,52 +1,206 @@
-# Docs
+# Stripe
 
 > AI generated website knowledge base
 
 ## Important Pages
 
-- [Create Connection - Docs by LangChain](https://docs.langchain.com/api-reference/agent-connections-v2/create-connection)
-- [List Connections - Docs by LangChain](https://docs.langchain.com/api-reference/agent-connections-v2/list-connections)
-- [Remove Connection - Docs by LangChain](https://docs.langchain.com/api-reference/agent-connections-v2/remove-connection)
+- [Stripe | Financial Infrastructure to Grow Your Revenue](https://stripe.com/)
+- [Stripe Connected Account Agreement](https://stripe.com/legal/connect-account)
+- [Songbox case study | Stripe](https://stripe.com/customers/songbox)
+- [Opus CEO on empowering clients through constant execution | Stripe](https://stripe.com/customers/opus-consulting)
+- [Github case study | Stripe](https://stripe.com/customers/github)
 
-## Create Connection - Docs by LangChain
+## Stripe | Financial Infrastructure to Grow Your Revenue
 
-# Create Connection - Docs by LangChain
+[Link](https://stripe.com/)
 
-> Source: https://docs.langchain.com/api-reference/agent-connections-v2/create-connection
+Description: # Stripe | Financial Infrastructure to Grow Your Revenue
 
-## Documentation Index
+> Source: https://stripe.com/
 
-Fetch the complete documentation index at:https://docs.langchain.com/llms.txt
+# Financial infrastructure to grow your revenue.Accept paymen
 
-Use this file to discover all available pages before exploring further.
+# Stripe | Financial Infrastructure to Grow Your Revenue
 
+> Source: https://stripe.com/
 
+# Financial infrastructure to grow your revenue.Accept payments, offer financial services, and implement custom revenue models—from your first transaction to your billionth.
 
-## List Connections - Docs by LangChain
+# Financial infrastructure to grow your revenue.Accept payments, offer financial services, and implement custom revenue models—from your first transaction to your billionth.
 
-# List Connections - Docs by LangChain
+## Flexible solutions for every business model.
 
-> Source: https://docs.langchain.com/api-reference/agent-connections-v2/list-connections
+### Accept and optimize payments globally—online and in person
 
-## Documentation Index
+### Enable any billing model
 
-Fetch the complete documentation index at:https://docs.langchain.com/llms.txt
+### Monetize through agentic commerce
 
-Use this file to discover all available pages before exploring further.
+### Create a card issuing program
 
+### Access borderless money movement with stablecoins and crypto
 
+### Embed payments in your platform
 
-## Remove Connection - Docs by LangChain
+## The backbone of global commerce
 
-# Remove Connection - Docs by LangChain
+Grow your business with a comprehensive set of payments and financial tools⁠—⁠designed to work individually or together.
 
-> Source: https://docs.langchain.com/api-reference/agent-connections-v2/remove-connection
+Grow your business with the most comprehensive set of payments and financial tools.
 
-## Documentation Index
+## Stripe Connected Account Agreement
 
-Fetch the complete documentation index at:https://docs.langchain.com/llms.txt
+[Link](https://stripe.com/legal/connect-account)
 
-Use this file to discover all available pages before exploring further.
+Description: # Stripe Connected Account Agreement
 
+> Source: https://stripe.com/legal/connect-account
 
+### 1. User’s Stripe Account.
+
+### 2. User’s Responsibilitie
+
+# Stripe Connected Account Agreement
+
+> Source: https://stripe.com/legal/connect-account
+
+### 1. User’s Stripe Account.
+
+### 2. User’s Responsibilities.
+
+### 3. Stripe Dashboard.
+
+### 4. Relationship to Stripe Connect Platforms.
+
+### 5. Disclaimer; Limitations on Stripe's Liability.
+
+### 6. Other General Legal Terms.
+
+### 7. Non-applicability.
+
+### 8. Key Definitions.
+
+For informational purposes only, we have translated the Stripe Connected Account Agreement into selected languageshere.
+
+This Stripe Connected Account Agreement (“Connected Account Agreement”) governs Connected Accounts’ use of Stripe Connect Services, and describes how Connected Accounts and their third-party platform provider(s) may use the Stripe Connect Services. This Connected Account Agreement forms a legal agreement between you or the entity you represent (“User”) and the applicable Stripe entity specified in Section 12 (Definitions) of the Stripe Services Agreement (“Stripe”). This Connected Account Agreement gov
+
+## Songbox case study | Stripe
+
+[Link](https://stripe.com/customers/songbox)
+
+Description: # Songbox case study | Stripe
+
+> Source: https://stripe.com/customers/songbox
+
+# Products used
+
+## Challenge
+
+## Solution
+
+## Results
+
+# Sonic Automot
+
+# Songbox case study | Stripe
+
+> Source: https://stripe.com/customers/songbox
+
+# Products used
+
+## Challenge
+
+## Solution
+
+## Results
+
+# Sonic Automotive transforms the online car buying experience with Stripe
+
+# SourceNext works with Stripe to combat credit card fraud
+
+Started as a passion project and launched in April 2021,Songboxis an audio platform that allows professional musicians, professional mixing engineers, studio staff, and anyone who works with audio to share their potentially valuable property privately and securely. In a little more than a year, the company has grown to several thousand users—from Grammy-Award winners to everyday audiophiles.
+
+Songbox founder, Michael Coll, is a product manager and musician who spent several years as a guitarist in a rock band sending out CDs to industry gatekeepers and hearing nothing back. Going to work at a large media organization, he finally saw firsthand how musicians’ demos went from the mail room straight to the trash can and tho
+
+## Opus CEO on empowering clients through constant execution | Stripe
+
+[Link](https://stripe.com/customers/opus-consulting)
+
+Description: # Opus CEO on empowering clients through constant execution | Stripe
+
+> Source: https://stripe.com/customers/opus-consulting
+
+# Products used
+
+### You
+
+# Opus CEO on empowering clients through constant execution | Stripe
+
+> Source: https://stripe.com/customers/opus-consulting
+
+# Products used
+
+### You’ve been supporting businesses for more than 25 years. How has Opus maintained its standard of excellence as more companies turn to online commerce?
+
+### What are some of the common challenges that Opus is solving for its customers?
+
+### How do you select the technology partners you choose to work with?
+
+### How would you describe your leadership approach when it comes to building a team that’s constantly focused on supporting your customers in new ways?
+
+### What’s your vision for the future of Opus?
+
+### What are the top three trends you see shaping the future of online commerce and payments for the customers you serve?
+
+### What kinds of services did your customers require during the height of the pandemic?
+
+### Do you think more businesses and consumers will gravitate toward online commerce?
+
+### Where do you think Stripe and Opus are
+
+## Github case study | Stripe
+
+[Link](https://stripe.com/customers/github)
+
+Description: # Github case study | Stripe
+
+> Source: https://stripe.com/customers/github
+
+# Products used
+
+## Challenge
+
+## Solution
+
+## Results
+
+### Two months to
+
+# Github case study | Stripe
+
+> Source: https://stripe.com/customers/github
+
+# Products used
+
+## Challenge
+
+## Solution
+
+## Results
+
+### Two months to launch the platform
+
+### Connect’s global payouts drive a 5x increase in global coverage
+
+### Invoicing now takes minutes instead of days
+
+### Time spent addressing disputes reduced by 20 hours per month, on average
+
+# GiveTap turns charity fundraisers’ phones into card readers with Stripe Terminal
+
+# Global SaaS platform transforms the world’s fitness industry with Stripe
+
+GitHub Sponsorsenables organizations and businesses to make one-time or recurring payments to developers working on open source projects to maintain, secure, and innovate the software that runs the world. GitHub uses Stripe for seamless, trustworthy, and secure international onboarding and global payment infrastructure for developers and organizations.
+
+GitHub Sponsors aimed to support open source developers who maintain open source projects that are key to the global
 

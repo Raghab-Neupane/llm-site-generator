@@ -31,6 +31,72 @@ from app.storage.file_writer import (
     save_llms_txt
 )
 
+def normalize_url(url: str) -> str:
+    """Normalize a URL to prevent duplicates (lowercase hostname, strip slash, strip query/fragment)."""
+    if not url:
+        return ""
+    url = url.strip()
+    if "#" in url:
+        url = url.split("#")[0]
+    if "?" in url:
+        url = url.split("?")[0]
+    return url.rstrip("/")
+
+
+def is_valid_url(url: str) -> bool:
+    """Filter out non-http, query/fragment loops, and unwanted pages (admin, login, 404, etc)."""
+    if not url:
+        return False
+    
+    url_lower = url.lower()
+    
+    # Must start with http:// or https://
+    if not (url_lower.startswith("http://") or url_lower.startswith("https://")):
+        return False
+        
+    # Skip mailto, javascript, anchor fragments
+    if "mailto:" in url_lower or "javascript:" in url_lower or "#" in url_lower:
+        return False
+        
+    # Bad path patterns to skip
+    bad_patterns = [
+        "/404", "/login", "/signup", "/cart", "/password", "/admin", 
+        "/ssa", "/wp-admin", "/wp-content", "/wp-includes"
+    ]
+    for pattern in bad_patterns:
+        if pattern in url_lower:
+            return False
+            
+    # Skip obvious binary files or media if they slip through
+    bad_extensions = (
+        ".png", ".jpg", ".jpeg", ".gif", ".svg", ".ico", ".webp",
+        ".pdf", ".zip", ".tar", ".gz", ".css", ".js", ".xml", ".json"
+    )
+    if url_lower.endswith(bad_extensions):
+        return False
+        
+    return True
+
+
+def get_url_score(url: str, base_url: str) -> int:
+    """Score URLs to prioritize high quality pages like /docs, /blog, /pricing, and the homepage."""
+    normalized = normalize_url(url)
+    normalized_base = normalize_url(base_url)
+    
+    if normalized == normalized_base:
+        return 100  # Homepage is highest priority
+        
+    url_lower = normalized.lower()
+    
+    # Check for high quality keywords
+    high_quality_patterns = ["/about", "/docs", "/blog", "/pricing", "/legal", "/api"]
+    for pattern in high_quality_patterns:
+        if pattern in url_lower:
+            return 50
+            
+    return 0
+
+
 router = APIRouter()
 
 
@@ -110,21 +176,42 @@ async def crawl_site(request: CrawlRequest):
             []
         )
 
-    # STILL NO PAGES
+    # STEP 2C
+    # DEDUPLICATE, FILTER, AND PRIORITIZE CANDIDATE PAGES
 
-    if not actual_pages:
+    # Start with the homepage itself as a candidate
+    candidate_urls = [request.url]
+    candidate_urls.extend(actual_pages)
+
+    # Filter out invalid, low quality, and duplicate URLs
+    seen = set()
+    unique_urls = []
+    for url in candidate_urls:
+        normalized = normalize_url(url)
+        if is_valid_url(url) and normalized not in seen:
+            seen.add(normalized)
+            unique_urls.append(url)
+
+    # Sort URLs based on priority (Homepage first, followed by key pages like about, docs, pricing, etc.)
+    unique_urls.sort(key=lambda u: get_url_score(u, request.url), reverse=True)
+
+    # STILL NO PAGES
+    if not unique_urls:
 
         return {
             "status": "error",
-            "message": "No pages found via sitemap or homepage links"
+            "message": "No pages found via sitemap or homepage links after filtering"
         }
 
     # STEP 3
-    # FETCH PAGES
+    # FETCH PAGES AND SELECT HIGH QUALITY CONTENT
 
     pages_data = []
+    MAX_PAGES = 5  # Keep up to 5 best quality pages
 
-    for page_url in actual_pages[:3]:
+    for page_url in unique_urls:
+        if len(pages_data) >= MAX_PAGES:
+            break
 
         try:
 
@@ -144,13 +231,24 @@ async def crawl_site(request: CrawlRequest):
                 .strip()
             )
 
-            if not title:
-                title = "No Title"
+            # Skip pages with missing/generic titles, empty content, or extremely short markdown
+            if (
+                not title 
+                or title.lower() in ("no title", "", "untitled") 
+                or not markdown.strip() 
+                or len(markdown.strip()) < 150
+            ):
+                continue
 
             pages_data.append({
                 "title": title,
                 "url": page_url,
-                "markdown": markdown
+                "markdown": markdown,
+                "description": (
+                    markdown[:150]
+                    if markdown else
+                    "No description"
+                )
             })
 
         except Exception as e:
