@@ -26,6 +26,8 @@ def login(data: LoginRequest):
 
     user = cursor.fetchone()
 
+    print(user)
+
     if not user:
 
         raise HTTPException(
