@@ -1,6 +1,6 @@
 # reusable protected-route verification
 from fastapi import Depends, HTTPException
-from fastapi.security import HTTPBearer, HTTPAuthorizationCredintials
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from jose import jwt, JWTError
 
 from .jwt_handler import SECRET_KEY, ALGORITHM
@@ -8,9 +8,9 @@ from .jwt_handler import SECRET_KEY, ALGORITHM
 security = HTTPBearer()
 
 def verify_token(
-    credintials : HTTPAuthorizationCredintials = Depends(security)
+    credentials : HTTPAuthorizationCredentials = Depends(security)
 ):
-    token = credintials.credentials
+    token = credentials.credentials
 
     try: 
 

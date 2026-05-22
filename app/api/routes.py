@@ -1,5 +1,5 @@
 import re
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from bs4 import BeautifulSoup
@@ -12,6 +12,7 @@ from app.extractor.html_fetcher import fetch_html
 from app.transformer.markdown_generator import generate_markdown
 from app.transformer.llms_generator import generate_llms_txt
 from app.storage.file_writer import save_llms_txt
+from app.api.authentication.dependencies import verify_token
 
 router = APIRouter()
 
@@ -118,7 +119,7 @@ class CrawlRequest(BaseModel):
 # MAIN CRAWLER ROUTE
 # -----------------------------
 @router.post("/crawl-site")
-async def crawl_site(request: CrawlRequest):
+async def crawl_site(request: CrawlRequest, payload: dict = Depends(verify_token)):
     print(f"[DEBUG] Received crawl request for base URL: {request.url}")
 
     # STEP 1: FETCH ROBOTS.TXT
@@ -315,7 +316,7 @@ async def crawl_site(request: CrawlRequest):
     }
 
 @router.get("/llms.txt")
-async def get_llms_txt():
+async def get_llms_txt(payload: dict = Depends(verify_token)):
     return FileResponse(
         path="outputs/llms.txt",
         media_type="text/plain",
