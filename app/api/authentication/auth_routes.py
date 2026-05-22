@@ -1,25 +1,46 @@
-#login endpoint
 from fastapi import APIRouter, HTTPException
 
 from .schemas import LoginRequest
 from .jwt_handler import create_access_token
+from app.database import cursor
+
 
 router = APIRouter()
 
+
 @router.post("/login")
-def login(data:LoginRequest):
-    
-    if data.username != "example@gmail.com" or data.password != "123456":
+def login(data: LoginRequest):
+
+    query = """
+        SELECT * FROM users
+        WHERE email = %s
+        AND password = %s
+    """
+
+    values = (
+        data.username,
+        data.password
+    )
+
+    cursor.execute(query, values)
+
+    user = cursor.fetchone()
+
+    if not user:
+
         raise HTTPException(
             status_code=401,
-            detail="Invalid authentication credentials"
+            detail="Invalid credentials"
         )
-        
+
     access_token = create_access_token(
         data={
-            "sub":data.username
+            "sub": user["email"],
+            "user_id": user["id"]
         }
     )
 
-    return {"access_token":access_token,"token_type":"bearer"}
-        
+    return {
+        "access_token": access_token,
+        "token_type": "bearer"
+    }
