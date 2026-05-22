@@ -1,23 +1,249 @@
-# Ambitiongurucollege
+# Claude
 
 > AI generated website knowledge base
 
 ## Important Pages
 
-* [AmbitionGuru College](https://ambitiongurucollege.edu.np/)  
+* [Think fast,build faster](https://claude.com)  
+* [Schnell denken,schneller bauen](https://claude.com/de)  
+* [Pensez vite,développez encore plus vite](https://claude.com/fr)  
+* [AIエージェントを圧倒的な競争優位に](https://claude.com/ja/solutions/agents)  
+* [Nutzen Sie KI-Agenten zu Ihrem Vorteil](https://claude.com/de/solutions/agents)  
 
 ---
 
-## AmbitionGuru College
+## Think fast,build faster
 
 **Source:**
-https://ambitiongurucollege.edu.np/
+https://claude.com
 
 **Description:**
-Your browser does not support the video tag. [Apply Now](https://ambitiongurucollege.edu.np/apply-now)  [AMBITION GURUCOLLEGE](https://ambitiongurucollege.edu.np/) Where every Ambition finds its PathA
+[Continue with email](https://claude.ai/?redirect=claude.com&via=static_email) By continuing, you acknowledge Anthropic's [Privacy Policy](https://www.anthropic.com/legal/privacy) and agree to get occ
 
 ### Content
 
-Your browser does not support the video tag. [Apply Now](https://ambitiongurucollege.edu.np/apply-now)
+# Think fast,build faster
 
-[AMBITION GURUCOLLEGE](https://ambitiongurucollege.edu.np/) Where every Ambition finds its PathAt Ambition Guru College, students don’t just study, they learn, earn, and grow. With a student-centered learning environment, we equip learners with real-world skills, a growth mindset, and the adaptability to excel in tech-driven industries and beyond.At Ambition Guru College, students don’t just study, they learn, earn, and grow. With a student-centered learning environment, we equip learners with real-world skills, a growth mindset, and the adaptability to excel in tech-driven industries and beyond.
+Brainstorm in chat, build in Cowork
+
+[Continue with email](https://claude.ai/?redirect=claude.com&via=static_email) By continuing, you acknowledge Anthropic's [Privacy Policy](https://www.anthropic.com/legal/privacy) and agree to get occasional promotional emails and notifications.
+
+## Explore plans
+
+### Free
+
+Try Claude
+
+$0
+
+Free for everyone
+
+[Try Claude](https://claude.ai/login?plan=free)
+* Chat on web, iOS, Android, and on your desktop
+* Generate code and visualize data
+* Write, edit, and create content
+* Analyze text and images
+* Ability to search the web
+* Create files and execute code
+* Unlock more from Claude with desktop extensions
+* Connect Slack and Google Workspace services
+* Integrate any context or tool through connectors with remote MCP
+* Extended thinking for complex work
+
+### Pro
+
+For everyday productivity
+
+$17
+
+Per month with annual subscription discount ($200 billed up front). $20 if billed monthly.
+
+[Try Claude](https://claude.ai/login?pla
+
+---
+
+## Schnell denken,schneller bauen
+
+**Source:**
+https://claude.com/de
+
+**Description:**
+[Mit E-Mail fortfahren](https://claude.ai/?redirect=claude.com&via=static_email) Mit dem Fortfahren bestätigst du Anthropics [Datenschutzrichtlinie](https://www.anthropic.com/legal/privacy) und stimms
+
+### Content
+
+# Schnell denken,schneller bauen
+
+Im Chat brainstormen, in Cowork bauen
+
+[Mit E-Mail fortfahren](https://claude.ai/?redirect=claude.com&via=static_email) Mit dem Fortfahren bestätigst du Anthropics [Datenschutzrichtlinie](https://www.anthropic.com/legal/privacy) und stimmst dem gelegentlichen Erhalt von Werbe-E-Mails und Benachrichtigungen zu.
+
+## Pläne erkunden
+
+### Free
+
+Claude ausprobieren
+
+0 $
+
+Kostenlos für alle
+
+[Claude ausprobieren](https://claude.ai/login?plan=free)
+* Im Web, auf iOS, Android und dem Desktop chatten
+* Code generieren und Daten visualisieren
+* Inhalte schreiben, bearbeiten und erstellen
+* Text und Bilder analysieren
+* Websuche möglich
+* Dateien erstellen und Code ausführen
+* Mit Desktop-Erweiterungen mehr aus Claude herausholen
+* Slack- und Google Workspace-Dienste verbinden
+* Beliebige Kontexte oder Tools über Konnektoren mit Remote-MCP einbinden
+* Erweitertes Denken für komplexe Aufgaben
+
+### Pro
+
+Für alltägliche Produktivität
+
+17 $
+
+Pro Monat mit Jahresabo-Ra
+
+---
+
+## Pensez vite,développez encore plus vite
+
+**Source:**
+https://claude.com/fr
+
+**Description:**
+Brainstormez dans le chat, construisez dans Cowork
+
+### Content
+
+# Pensez vite,développez encore plus vite
+
+Brainstormez dans le chat, construisez dans Cowork
+
+[Continuer avec l'e-mail](https://claude.ai/?redirect=claude.com&via=static_email) En continuant, vous reconnaissez la [Politique de confidentialité](https://www.anthropic.com/legal/privacy) d'Anthropic et acceptez de recevoir occasionnellement des e-mails promotionnels et des notifications.
+
+## Explorer les formules
+
+### Free
+
+Essayer Claude
+
+0 $
+
+Gratuit pour tous
+
+[Essayer Claude](https://claude.ai/login?plan=free)
+* Discutez sur le web, iOS, Android et sur votre bureau
+* Générer du code et visualiser des données
+* Rédiger, modifier et créer du contenu
+* Analyser du texte et des images
+* Capacité de recherche sur le web
+* Créer des fichiers et exécuter du code
+* Décuplez les capacités de Claude avec les extensions de bureau
+* Connectez les services Slack et Google Workspace
+* Intégrez n'importe quel contexte ou outil via des connecteurs avec MCP distant
+* Raisonnement étendu pour les trava
+
+---
+
+## AIエージェントを圧倒的な競争優位に
+
+**Source:**
+https://claude.com/ja/solutions/agents
+
+**Description:**
+Claudeを活用して、より効果的に計画、実行、連携するAIエージェントを構築できます。
+
+### Content
+
+# AIエージェントを圧倒的な競争優位に
+
+Claudeを活用して、より効果的に計画、実行、連携するAIエージェントを構築できます。
+
+開発を始める [開発を始める](https://platform.claude.com/) 営業担当者に問い合わせる [営業担当者に問い合わせる](https://claude.com/ja/contact-sales)
+
+## 強力かつ協調的で安全なAIエージェント
+
+優れた推論と人間並みの品質の回答を取得できます。
+
+### AIエージェント用の最良モデル
+
+Claudeは、カスタマーサポートからコーディングまで、AIエージェントのシナリオにおいて他のモデルを凌駕します。
+
+### 人間味のあるAIエージェント
+
+Claudeの会話スタイルは、AIエージェントとユーザーの間に真の協働をもたらします。
+
+### お客様のブランドを守るAI
+
+Claudeは、誠実さ、ジェイルブレイク耐性、ブランドセキュリティにおいて最も高い評価を得ています。
+
+効果的なエージェントを構築する
+
+Anthropicのエンジニアリングチームが、顧客との協業とエージェント構築を通じて得た知見。
+
+詳細はこちら [詳細はこちら](https://www.anthropic.com/engineering/building-effective-agents) 3倍
+
+コード変更頻度の減少
+
+PrevNext
+
+## Claude Developer PlatformでAIエージェントを構築
+
+Claudeの強力なAI機能を既存のアプリケーションに統合し、本番環境レベルのエージェントをより迅速に提供します。
+
+既存のプロンプト
+
+すべてのカスタマーサポートチケットを、最も関連性の高いカテゴリに分類します。以下は、選択できるカテゴリのリストです。{{CATEGORY_LIST}}サポートチケットの内容は次のとおりです。{{TICKET_CONTENT}}
+
+何を改善したいですか？
+
+その分類の根拠を含めてください。
+
+あなたは、カスタマーサポートチケットの分類を専門とするAIアシスタントです。あなたのタスクは、与えられたチケットの内容を分析し、事前定義されたリストから最も適切なカテゴリに割り当てることです。また、その分類の決定理由も説明します。
+
+まず、使用可能
+
+---
+
+## Nutzen Sie KI-Agenten zu Ihrem Vorteil
+
+**Source:**
+https://claude.com/de/solutions/agents
+
+**Description:**
+Mit Claude können Sie KI-Agenten erstellen, die effektiver planen, handeln und zusammenarbeiten.
+
+### Content
+
+# Nutzen Sie KI-Agenten zu Ihrem Vorteil
+
+Mit Claude können Sie KI-Agenten erstellen, die effektiver planen, handeln und zusammenarbeiten.
+
+Jetzt loslegen [Jetzt loslegen](https://platform.claude.com/) Sales kontaktieren [Sales kontaktieren](https://claude.com/de/contact-sales)
+
+## Leistungsstarke, kollaborative und sichere KI-Agenten
+
+Überlegene Denkweisen und Antworten von menschlicher Qualität.
+
+### Das beste Modell für KI-Agenten
+
+Claude übertrifft andere Modelle in KI-Agent-Szenarien: vom Kundensupport bis zur Programmierung.
+
+### KI-Agenten mit menschlicher Note
+
+Der Gesprächsstil von Claude führt zu einer echten Zusammenarbeit zwischen KI-Agenten und Benutzern.
+
+### KI zum Schutz Ihrer Marke
+
+Claude erzielt Top-Werte bei Ehrlichkeit, Jailbreak- und Markensicherheit.
+
+Aufbau effektiver Agenten
+
+Was das Anthropic Engineering Team aus der Zusammenarbeit mit Kunden und der Entwicklung eigener Agenten gelernt hat.
+
+Weiter lesen [Weiter lesen](https://www.anthropic.com/engineering/bui

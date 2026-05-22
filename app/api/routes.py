@@ -1,5 +1,8 @@
 from app.extractor.content_analyzer import weak_content
 import re
+import json
+import datetime
+from pathlib import Path
 from fastapi import APIRouter, Depends
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
@@ -326,6 +329,39 @@ async def crawl_site(request: CrawlRequest, payload: dict = Depends(verify_token
     save_llms_txt(llms_txt)
     print(f"[DEBUG] Generation completed! llms.txt saved to outputs/llms.txt")
 
+    # Save to history.json
+    try:
+        history_file = Path("outputs/history.json")
+        history_data = []
+        if history_file.exists():
+            try:
+                history_data = json.loads(history_file.read_text())
+            except Exception:
+                history_data = []
+        
+        user_info = payload.get("sub", "anonymous")
+
+        new_item = {
+            "url": request.url,
+            "title": site_name,
+            "timestamp": datetime.datetime.utcnow().isoformat(),
+            "llms_txt": llms_txt,
+            "user": user_info
+        }
+
+        # Deduplicate history based on URL and User
+        history_data = [item for item in history_data if not (item.get("url") == request.url and item.get("user") == user_info)]
+        history_data.insert(0, new_item)
+        
+        # Limit history to 50 items
+        history_data = history_data[:50]
+
+        history_file.parent.mkdir(parents=True, exist_ok=True)
+        history_file.write_text(json.dumps(history_data, indent=2))
+        print(f"[DEBUG] Successfully synced search item to history.json for user: {user_info}")
+    except Exception as e:
+        print(f"[ERROR] Failed to save search history: {e}")
+
     # STEP 11: RETURN RESPONSE
     return {
         "status": "success",
@@ -350,3 +386,17 @@ async def get_llms_txt(payload: dict = Depends(verify_token)):
         media_type="text/plain",
         filename="llms.txt"
     )
+
+@router.get("/history")
+async def get_history(payload: dict = Depends(verify_token)):
+    user_info = payload.get("sub", "anonymous")
+    history_file = Path("outputs/history.json")
+    if not history_file.exists():
+        return []
+    try:
+        all_history = json.loads(history_file.read_text())
+        # Filter history by current user
+        user_history = [item for item in all_history if item.get("user") == user_info]
+        return user_history
+    except Exception:
+        return []
