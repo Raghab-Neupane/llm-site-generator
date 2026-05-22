@@ -9,7 +9,7 @@ router = APIRouter()
 @router.post("/login")
 def login(data:LoginRequest):
     
-    if data.username != "admin" or data.password != "123456":
+    if data.username != "[EMAIL_ADDRESS]" or data.password != "123456":
         raise HTTPException(
             status_code=401,
             detail="Invalid authentication credentials"
