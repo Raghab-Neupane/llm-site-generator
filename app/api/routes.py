@@ -1,9 +1,11 @@
+from app.extractor.content_analyzer import weak_content
 import re
 from fastapi import APIRouter, Depends
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from bs4 import BeautifulSoup
 from urllib.parse import urlparse
+from playwright.async_api import async_playwright
 
 from app.crawler.robots_parser import parse_robots
 from app.crawler.sitemap_parser import parse_sitemap
@@ -15,6 +17,28 @@ from app.storage.file_writer import save_llms_txt
 from app.api.authentication.dependencies import verify_token
 
 router = APIRouter()
+async def fetch_spa_html(url: str) -> str:
+
+    async with async_playwright() as p:
+
+        browser = await p.chromium.launch(
+            headless=True
+        )
+
+        page = await browser.new_page()
+
+        await page.goto(
+            url,
+            wait_until="networkidle",
+            timeout=60000
+        )
+
+        html = await page.content()
+
+        await browser.close()
+
+        return html
+
 
 def clean_text(text: str) -> str:
     return re.sub(r'\s+', ' ', text).strip()
@@ -203,6 +227,10 @@ async def crawl_site(request: CrawlRequest, payload: dict = Depends(verify_token
         try:
             print(f"[DEBUG] Fetching HTML for page: {page_url}")
             html = await fetch_html(page_url)
+
+            if weak_content(html):
+               print("[DEBUG] Weak static HTML detected")
+               html = await fetch_spa_html(page_url)
 
             if len(html) > 2_000_000:
                 print(f"[DEBUG] Skipped page {page_url} (size {len(html)} bytes exceeds 2MB limit)")

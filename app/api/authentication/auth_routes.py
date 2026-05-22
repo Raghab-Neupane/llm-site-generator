@@ -11,6 +11,12 @@ router = APIRouter()
 @router.post("/login")
 def login(data: LoginRequest):
 
+    if cursor is None:
+        raise HTTPException(
+            status_code=500,
+            detail="Database connection is currently unavailable. Please verify your backend configurations."
+        )
+
     query = """
         SELECT * FROM users
         WHERE email = %s
