@@ -1,22 +1,44 @@
-from playwright.sync_api import sync_playwright
+from playwright.async_api import async_playwright
 
-def fetch_spa_html(url: str) -> str:
 
-    with sync_playwright() as p:
+async def fetch_spa_html(url: str) -> str:
 
-        browser = p.chromium.launch(
+    async with async_playwright() as p:
+
+        browser = await p.chromium.launch(
             headless=True
         )
 
-        page = browser.new_page()
+        page = await browser.new_page()
 
-        page.goto(
+        await page.goto(
             url,
-            wait_until="networkidle"
+            wait_until="domcontentloaded",
+            timeout=60000
         )
 
-        html = page.content()
+        # WAIT FOR MAIN CONTENT
+        try:
+            await page.wait_for_selector(
+                "h1",
+                timeout=10000
+            )
+        except:
+            pass
 
-        browser.close()
+        # EXTRA HYDRATION STABILIZATION
+        await page.wait_for_timeout(3000)
 
-        return html
+        # SCROLL TO TRIGGER LAZY LOADING
+        await page.evaluate("""
+            window.scrollTo(0, document.body.scrollHeight)
+        """)
+
+        await page.wait_for_timeout(2000)
+
+        # EXTRACT ONLY VISIBLE RENDERED TEXT
+        text = await page.locator("body").inner_text()
+
+        await browser.close()
+
+        return text

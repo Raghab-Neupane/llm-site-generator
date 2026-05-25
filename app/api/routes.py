@@ -20,27 +20,86 @@ from app.storage.file_writer import save_llms_txt
 from app.api.authentication.dependencies import verify_token
 
 router = APIRouter()
-async def fetch_spa_html(url: str) -> str:
 
+
+# ---------------------------------------------------------
+# SPA FETCHER — returns visible rendered text only
+# ---------------------------------------------------------
+async def fetch_spa_html(url: str) -> str:
+    """
+    Fetch visible rendered text from a SPA page using Playwright.
+    Returns inner_text() instead of page.content() so that Angular/React/Vue
+    template artifacts (ngRepeat, ngIf, hydration markers, etc.) are excluded.
+    """
     async with async_playwright() as p:
 
         browser = await p.chromium.launch(
             headless=True
         )
 
-        page = await browser.new_page()
+        try:
+            page = await browser.new_page()
 
-        await page.goto(
-            url,
-            wait_until="networkidle",
-            timeout=60000
-        )
+            print(
+                f"[DEBUG] SPA fetch: navigating to {url}"
+            )
 
-        html = await page.content()
+            # Navigate with domcontentloaded — faster than networkidle
+            # and sufficient since we add explicit waits below
+            await page.goto(
+                url,
+                wait_until="domcontentloaded",
+                timeout=60000
+            )
 
-        await browser.close()
+            # Wait for hydration: try to wait for an h1 element
+            # which signals the framework has rendered content
+            try:
+                await page.wait_for_selector(
+                    "h1",
+                    timeout=8000
+                )
+                print(
+                    "[DEBUG] SPA fetch: h1 selector found"
+                )
+            except Exception:
+                print(
+                    "[DEBUG] SPA fetch: h1 not found, "
+                    "continuing with stabilization wait"
+                )
 
-        return html
+            # Stabilization wait for remaining hydration / async rendering
+            await page.wait_for_timeout(2000)
+
+            # Auto-scroll to trigger lazy-loaded content
+            await page.evaluate("""
+                async () => {
+                    const delay = ms => new Promise(r => setTimeout(r, ms));
+                    const scrollHeight = document.body.scrollHeight;
+                    const step = Math.max(window.innerHeight, 400);
+                    for (let y = 0; y < scrollHeight; y += step) {
+                        window.scrollTo(0, y);
+                        await delay(300);
+                    }
+                    window.scrollTo(0, 0);
+                }
+            """)
+
+            # Brief wait after scrolling for lazy content to settle
+            await page.wait_for_timeout(1000)
+
+            # Extract ONLY visible rendered text — no raw DOM / template junk
+            text = await page.locator("body").inner_text()
+
+            print(
+                f"[DEBUG] SPA fetch: extracted "
+                f"{len(text)} chars of visible text"
+            )
+
+            return text
+
+        finally:
+            await browser.close()
 
 
 def clean_text(text: str) -> str:
@@ -198,7 +257,6 @@ async def crawl_site(request: CrawlRequest, payload: dict = Depends(verify_token
             print(f"[DEBUG] Invalid URL skipped: {url}")
 
     # STEP 5: PRIORITIZE HIGH QUALITY URLS
-    # Log scores
     scored_urls = []
     for url in unique_urls:
         score = get_url_score(url, request.url)
@@ -216,92 +274,263 @@ async def crawl_site(request: CrawlRequest, payload: dict = Depends(verify_token
             "message": "No pages found"
         }
 
-    # STEP 6: FETCH PAGE CONTENT AND EVALUATE QUALITY
+    # -----------------------------
+    # STEP 6: FETCH PAGE CONTENT
+    # -----------------------------
     pages_data = []
     MAX_PAGES = 5
     seen_titles = set()
     seen_hashes = set()
 
     for page_url in unique_urls:
+
         if len(pages_data) >= MAX_PAGES:
-            print(f"[DEBUG] Target limit of {MAX_PAGES} pages reached.")
+            print(
+                f"[DEBUG] Target limit of "
+                f"{MAX_PAGES} pages reached."
+            )
             break
 
         try:
-            print(f"[DEBUG] Fetching HTML for page: {page_url}")
+
+            print(
+                f"[DEBUG] Fetching HTML for page: "
+                f"{page_url}"
+            )
+
+            # ---------------------------------
+            # STATIC FETCH
+            # ---------------------------------
             html = await fetch_html(page_url)
 
+            is_spa = False
+
+            # ---------------------------------
+            # SPA FALLBACK
+            # ---------------------------------
             if weak_content(html):
-               print("[DEBUG] Weak static HTML detected")
-               html = await fetch_spa_html(page_url)
 
+                print(
+                    "[DEBUG] Weak static HTML detected, "
+                    "falling back to SPA fetch"
+                )
+
+                html = await fetch_spa_html(
+                    page_url
+                )
+
+                is_spa = True
+
+            # ---------------------------------
+            # SIZE CHECK
+            # ---------------------------------
             if len(html) > 2_000_000:
-                print(f"[DEBUG] Skipped page {page_url} (size {len(html)} bytes exceeds 2MB limit)")
+
+                print(
+                    f"[DEBUG] Skipped page "
+                    f"{page_url} "
+                    f"(size {len(html)} "
+                    f"bytes exceeds 2MB limit)"
+                )
+
                 continue
 
-            # Check link density (navigation/link farm checking)
-            soup = BeautifulSoup(html, "html.parser")
-            text_all = soup.get_text()
-            text_all_len = len(clean_text(text_all))
-            text_links = "".join(a.get_text() for a in soup.find_all("a"))
-            text_links_len = len(clean_text(text_links))
-            
-            link_density = text_links_len / text_all_len if text_all_len > 0 else 0
-            if link_density > 0.5:
-                print(f"[DEBUG] Skipped page {page_url} due to high link density ({link_density:.2f})")
-                continue
+            # ---------------------------------
+            # STATIC HTML FLOW
+            # ---------------------------------
+            if not is_spa:
 
-            # Convert to Markdown
-            markdown = generate_markdown(html, page_url)
-            markdown_len = len(markdown.strip())
-            print(f"[DEBUG] Generated Markdown length: {markdown_len}")
+                soup = BeautifulSoup(
+                    html,
+                    "html.parser"
+                )
 
-            # Quality Check: Skip empty or extremely short content
+                text_all = soup.get_text()
+
+                text_all_len = len(
+                    clean_text(text_all)
+                )
+
+                text_links = "".join(
+                    a.get_text()
+                    for a in soup.find_all("a")
+                )
+
+                text_links_len = len(
+                    clean_text(text_links)
+                )
+
+                link_density = (
+                    text_links_len / text_all_len
+                    if text_all_len > 0
+                    else 0
+                )
+
+                if link_density > 0.5:
+
+                    print(
+                        f"[DEBUG] Skipped page "
+                        f"{page_url} due to "
+                        f"high link density "
+                        f"({link_density:.2f})"
+                    )
+
+                    continue
+
+                markdown = generate_markdown(
+                    html,
+                    page_url
+                )
+
+            # ---------------------------------
+            # SPA TEXT FLOW
+            # ---------------------------------
+            else:
+
+                markdown = f"""
+# SPA Content
+
+{html}
+"""
+
+            # ---------------------------------
+            # MARKDOWN LENGTH CHECK
+            # ---------------------------------
+            markdown_len = len(
+                markdown.strip()
+            )
+
+            print(
+                f"[DEBUG] Generated Markdown "
+                f"length: {markdown_len}"
+            )
+
             if markdown_len < 150:
-                print(f"[DEBUG] Skipped page {page_url} due to short markdown length ({markdown_len} chars)")
+
+                print(
+                    f"[DEBUG] Skipped page "
+                    f"{page_url} due to "
+                    f"short markdown length "
+                    f"({markdown_len} chars)"
+                )
+
                 continue
 
-            # Quality Check: Check for typical Error Pages or JS Shell Pages in the title
+            # ---------------------------------
+            # TITLE EXTRACTION
+            # ---------------------------------
             title = "No Title"
+
             for line in markdown.splitlines():
-                cleaned = line.replace("#", "").strip()
+
+                cleaned = (
+                    line.replace("#", "")
+                    .strip()
+                )
+
                 if cleaned:
                     title = cleaned
                     break
 
             title_lower = title.lower()
-            if title_lower in ["no title", "", "untitled", "404", "not found", "error", "site maintenance", "unauthorized"]:
-                print(f"[DEBUG] Skipped page {page_url} due to generic/error title: '{title}'")
+
+            if title_lower in [
+                "no title",
+                "",
+                "untitled",
+                "404",
+                "not found",
+                "error",
+                "site maintenance",
+                "unauthorized"
+            ]:
+
+                print(
+                    f"[DEBUG] Skipped page "
+                    f"{page_url} due to "
+                    f"generic/error title: "
+                    f"'{title}'"
+                )
+
                 continue
 
-            # Deduplication based on title or content hash (first 200 chars normalized)
-            title_norm = re.sub(r'\W+', '', title).lower()
-            content_hash = re.sub(r'\W+', '', markdown[:200]).lower()
-            
+            # ---------------------------------
+            # DEDUPLICATION
+            # ---------------------------------
+            title_norm = re.sub(
+                r'\W+',
+                '',
+                title
+            ).lower()
+
+            content_hash = re.sub(
+                r'\W+',
+                '',
+                markdown[:200]
+            ).lower()
+
             if title_norm in seen_titles:
-                print(f"[DEBUG] Skipped duplicate page by title: '{title}' ({page_url})")
+
+                print(
+                    f"[DEBUG] Skipped duplicate "
+                    f"page by title: "
+                    f"'{title}' ({page_url})"
+                )
+
                 continue
+
             if content_hash in seen_hashes:
-                print(f"[DEBUG] Skipped duplicate page by content hash: {page_url}")
+
+                print(
+                    f"[DEBUG] Skipped duplicate "
+                    f"page by content hash: "
+                    f"{page_url}"
+                )
+
                 continue
 
             seen_titles.add(title_norm)
+
             seen_hashes.add(content_hash)
 
-            # Description Extraction
-            description = clean_description(markdown)
-            print(f"[DEBUG] Extracted description: '{description}'")
+            # ---------------------------------
+            # DESCRIPTION EXTRACTION
+            # ---------------------------------
+            description = clean_description(
+                markdown
+            )
 
+            print(
+                f"[DEBUG] Extracted description: "
+                f"'{description}'"
+            )
+
+            # ---------------------------------
+            # SAVE PAGE DATA
+            # ---------------------------------
             pages_data.append({
+
                 "title": title,
+
                 "url": page_url,
+
                 "markdown": markdown,
+
                 "description": description
+
             })
-            print(f"[DEBUG] Successfully added page: '{title}'")
+
+            print(
+                f"[DEBUG] Successfully added "
+                f"page: '{title}'"
+            )
 
         except Exception as e:
-            print(f"[DEBUG] Error processing {page_url}: {e}")
+
+            print(
+                f"[DEBUG] Error processing "
+                f"{page_url}: {e}"
+            )
 
     # STEP 7: CHECK CONTENT
     if not pages_data:
@@ -338,7 +567,7 @@ async def crawl_site(request: CrawlRequest, payload: dict = Depends(verify_token
                 history_data = json.loads(history_file.read_text())
             except Exception:
                 history_data = []
-        
+
         user_info = payload.get("sub", "anonymous")
 
         new_item = {
@@ -352,7 +581,7 @@ async def crawl_site(request: CrawlRequest, payload: dict = Depends(verify_token
         # Deduplicate history based on URL and User
         history_data = [item for item in history_data if not (item.get("url") == request.url and item.get("user") == user_info)]
         history_data.insert(0, new_item)
-        
+
         # Limit history to 50 items
         history_data = history_data[:50]
 
@@ -379,6 +608,7 @@ async def crawl_site(request: CrawlRequest, payload: dict = Depends(verify_token
         "llms_txt_preview": llms_txt[:5000]
     }
 
+
 @router.get("/llms.txt")
 async def get_llms_txt(payload: dict = Depends(verify_token)):
     return FileResponse(
@@ -386,6 +616,7 @@ async def get_llms_txt(payload: dict = Depends(verify_token)):
         media_type="text/plain",
         filename="llms.txt"
     )
+
 
 @router.get("/history")
 async def get_history(payload: dict = Depends(verify_token)):
